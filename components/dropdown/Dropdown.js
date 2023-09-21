@@ -103,8 +103,9 @@ const factory = (Input) => {
       if (!this.props.disabled && this.props.onChange) {
         if (this.props.name) event.target.name = this.props.name;
         this.props.onChange(item, event);
-        this.close();
       }
+      events.pauseEvent(event);
+      this.close();
     };
 
     handleClick = (event) => {
@@ -132,18 +133,6 @@ const factory = (Input) => {
       const up = this.props.auto ? client.top > ((screenHeight / 2) + client.height) : false;
       this.setState({ active: true, up });
     };
-
-    handleFocus = (event) => {
-      event.stopPropagation();
-      if (!this.props.disabled) this.open(event);
-      if (this.props.onFocus) this.props.onFocus(event);
-    };
-
-    handleBlur = (event) => {
-      event.stopPropagation();
-      if (this.state.active) this.close();
-      if (this.props.onBlur) this.props.onBlur(event);
-    }
 
     renderTemplateValue(selected) {
       const { theme } = this.props;
@@ -204,8 +193,6 @@ const factory = (Input) => {
         <div
           className={className}
           data-react-toolbox="dropdown"
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
           tabIndex="-1"
         >
           <Input
